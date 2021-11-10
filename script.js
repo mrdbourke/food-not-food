@@ -19,7 +19,7 @@ const loadModel = async () => {
       // https://storage.googleapis.com/food-vision-model-playground/food_not_food_model_v1.tflite
       // "/food_not_food_model_v1.tflite"
 
-      "/food_not_food_model_v3.tflite"
+      "models/food_not_food_model_v3.tflite"
       // "https://storage.googleapis.com/food-vision-model-playground/food_not_food_model_v3.tflite"
     );
     model = tfliteModel; // assigning it to the global scope model as tfliteModel can only be used within this scope
