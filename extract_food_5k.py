@@ -1,5 +1,5 @@
 """
-Extracts images from Food-5k into "not-food" and "food" categories,
+Extracts images from Food-5k into "food" and "not_food" categories,
 training, evaluation and test sets are ignored.
 
 Original data downloaded here: https://www.kaggle.com/binhminhs10/food5k
