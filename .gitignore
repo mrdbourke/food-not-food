@@ -134,3 +134,7 @@ data/food_images/*
 data/non_food_images/*
 models/food_not_food_model_v0/*
 models/food_not_food_model_v1/*
+
+# Misc
+*/.DS_Store
+.DS_Store
