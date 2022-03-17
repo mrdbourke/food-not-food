@@ -40,6 +40,15 @@ My notes [are on Notion](https://www.notion.so/mrdbourke/November-6-100k-Livestr
 
 ## TODO: Steps to reproduce
 
+1. Create env
+2. Install `requirements.txt`
+
+3. Download data -> "data_download" (warning this takes ~10Gb of download/storage, this can be removed after model training)
+4. Process data -> "data_processing"
+5. Train model -> "model_building"
+6. Model eval -> "model_eval" (test images in "test_food_not_food_images")
+7. Web app version (see index.html, script.js, styles.css)
+
 
 ## TODO: Dataset(s)
 
