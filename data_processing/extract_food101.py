@@ -40,7 +40,9 @@ targ_dir = args.targ_dir
 dest_dir = args.dest_dir
 NUM_SAMPLES = int(args.num_samples)
 
-assert os.path.exists(targ_dir), "Target directory does not exist, please create it"
+assert os.path.exists(
+    targ_dir
+), f"Target directory {targ_dir} does not exist, please create it"
 
 # Get a list of paths from targ_dir
 # Note: Images are stored in form "101_food_classes_all_data/train/apple_pie/image.jpg"
@@ -67,3 +69,6 @@ for dir, subdirs, files in os.walk(args.dest_dir):
         print(
             f"[INFO] Total {subdir} images in {subdir_path}: {len(os.listdir(subdir_path))}"
         )
+
+# TODO: Remove old image folders
+
