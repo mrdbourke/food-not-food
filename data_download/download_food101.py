@@ -16,12 +16,12 @@ Data has been preprocessed into:
         ...
 """
 import os
-import shutil
 import requests
 import zipfile
 
-from shutil import move, copy2
 from tqdm import tqdm
+
+from shutil import move
 
 
 def unzip_data(filename):
@@ -31,9 +31,15 @@ def unzip_data(filename):
     Args:
       filename (str): a filepath to a target zip folder to be unzipped.
     """
-    zip_ref = zipfile.ZipFile(filename, "r")
-    zip_ref.extractall()
-    zip_ref.close()
+    with zipfile.ZipFile(filename, "r") as zf:
+        for item in tqdm(zf.infolist(), desc=f"Extracting: {filename} "):
+            try:
+                zf.extract(item, ".")
+            except zipfile.error as e:
+                print(e)
+    # zip_ref = zipfile.ZipFile(filename, "r")
+    # zip_ref.extractall()
+    # zip_ref.close()
 
 
 def download(url: str, filename: str):
@@ -57,18 +63,19 @@ def download(url: str, filename: str):
             bar.update(size)
 
 
-# Download data
+# Download Food101 data
 if not os.path.exists("*/101_food_classes_all_data.zip"):
     if not os.path.exists("*/101_food_classes_all_data"):
         zip_path = "101_food_classes_all_data.zip"
-        print(f"[INFO] Downloading Food101 data...")
+        # print(f"[INFO] Downloading Food101 data...")
+
+        # Download Food101 data
         download(
             url="https://storage.googleapis.com/ztm_tf_course/food_vision/101_food_classes_all_data.zip",
             filename=zip_path,
         )
-        # requests.get(
-        #     "https://storage.googleapis.com/ztm_tf_course/food_vision/101_food_classes_all_data.zip"
-        # )
+
+        # Unzip the data
         print(f"[INFO] Food101 downloaded, unzipping...")
         unzip_data(zip_path)
         print(f"[INFO] Data unzipped, moving to data directory...")
