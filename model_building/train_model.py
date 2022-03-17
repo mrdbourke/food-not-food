@@ -13,6 +13,7 @@ assert tf.__version__.startswith("2")
 tf.get_logger().setLevel("ERROR")
 
 from pathlib import Path
+from datetime import date
 from tflite_model_maker import model_spec
 from tflite_model_maker import image_classifier
 from tflite_model_maker.config import ExportFormat
@@ -66,7 +67,12 @@ def get_model_number(export_dir):
 
 
 model_number = get_model_number(export_dir)
-model_save_path = Path(export_dir, f"food_not_food_model_v{model_number}.tflite")
+
+# Get current date
+current_date = str(date.today())
+model_save_path = Path(
+    export_dir, f"{current_date}_food_not_food_model_v{model_number}.tflite"
+)
 
 print(f"[INFO] Saving the model to '{export_dir}' directory as '{model_save_path}'...")
 model.export(export_dir=export_dir, tflite_filename=model_save_path)
