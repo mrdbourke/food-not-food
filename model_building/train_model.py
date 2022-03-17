@@ -1,10 +1,5 @@
 import os
-
-import numpy as np
-
 import tensorflow as tf
-
-import matplotlib.pyplot as plt
 import argparse
 
 print(tf.__version__)
@@ -14,10 +9,7 @@ tf.get_logger().setLevel("ERROR")
 
 from pathlib import Path
 from datetime import date
-from tflite_model_maker import model_spec
 from tflite_model_maker import image_classifier
-from tflite_model_maker.config import ExportFormat
-from tflite_model_maker.config import QuantizationConfig
 from tflite_model_maker.image_classifier import DataLoader
 
 # Setup argparser
@@ -34,13 +26,16 @@ parser.add_argument(
 parser.add_argument(
     "--epochs", default=5, help="Number of epochs to train the model for."
 )
+parser.add_argument(
+    "--use_data_aug", default=True, help="Whether to use data augmentation or not."
+)
 args = parser.parse_args()
 
 # Setup parser variables
 train_data_path = args.train_dir
 test_data_path = args.test_dir
 export_dir = Path(args.export_dir)
-NUM_EPOCHS = args.epochs
+NUM_EPOCHS = int(args.epochs)
 
 
 # Find class names
@@ -53,7 +48,9 @@ test_data = DataLoader.from_folder(test_data_path)
 
 # Create model
 print(f"[INFO] Creating and training model...")
-model = image_classifier.create(train_data, epochs=NUM_EPOCHS)
+model = image_classifier.create(
+    train_data=train_data, epochs=NUM_EPOCHS, use_augmentation=args.use_data_aug
+)
 
 # Evaluate model
 print(f"[INFO] Evaluating the model on test data...")
