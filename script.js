@@ -53,7 +53,7 @@ function classifyImage(model, image) {
   console.log("model about to predict...");
   const output = model.predict(image);
   const output_values = tf.softmax(output.arraySync()[0]);
-  const output_max = output.arraySync()[0].max();
+  const output_max = tf.max(output.arraySync()[0]);
   console.log("Arg max:");
   // console.log(output);
   console.log(output_values.arraySync());
