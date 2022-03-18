@@ -53,16 +53,19 @@ function classifyImage(model, image) {
   console.log("model about to predict...");
   const output = model.predict(image);
   const output_values = tf.softmax(output.arraySync()[0]);
+  const output_max = output.arraySync()[0].max();
   console.log("Arg max:");
   // console.log(output);
   console.log(output_values.arraySync());
   console.log("Output:");
   console.log(output.arraySync());
   console.log(output.arraySync()[0]); // arraySync() Returns an array to use
+  console.log("Output max:");
+  console.log(output_max.arraySync());
 
   // Update HTML
   predicted_class.textContent = classes[output_values.argMax().arraySync()];
-  predicted_prob.textContent = output_values.max().arraySync() * 100 + "%";
+  predicted_prob.textContent = ((1 / 256) * output_max.arraySync()) * 100 + "%";
 }
 
 // Image uploading
