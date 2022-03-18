@@ -15,7 +15,7 @@ let model; // This is in global scope
 const loadModel = async () => {
   try {
     const tfliteModel = await tflite.loadTFLiteModel(
-      "models/food_not_food_model_v5.tflite"
+      "models/2022-03-18_food_not_food_model_efficientnet_lite0_v1.tflite"
     );
     model = tfliteModel; // assigning it to the global scope model as tfliteModel can only be used within this scope
     // console.log(tfliteModel);
