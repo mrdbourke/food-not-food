@@ -40,7 +40,36 @@ My notes [are on Notion](https://www.notion.so/mrdbourke/November-6-100k-Livestr
 
 ## TODO: Steps to reproduce
 
-1. Create env
+**Note:** If this doesn't work, please [leave an issue](https://github.com/mrdbourke/food-not-food/issues).
+
+To reproduce, the following steps are best run in order.
+
+You will require and installation of Conda, I'd recommend [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+
+### Clone the repo
+
+```
+git clone https://github.com/mrdbourke/food-not-food
+cd food-not-food
+```
+
+### Environment creation
+
+I use Conda for my environments. You could do similar with [`venv`](https://docs.python.org/3/library/venv.html) and `pip` but I prefer Conda.
+
+This code works with Python 3.8.
+
+```
+conda create --prefix ./env python=3.8
+conda activate ./env
+conda install pip
+``` 
+
+### Installing requirements
+
+
+
+
 2. Install `requirements.txt`
 
 3. Download data -> "data_download" (warning this takes ~10Gb of download/storage, this can be removed after model training)
