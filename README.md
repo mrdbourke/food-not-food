@@ -38,7 +38,7 @@ I made it cleaner and more reproducible.
 
 My notes [are on Notion](https://www.notion.so/mrdbourke/November-6-100k-Livestream-Celebration-a6ed0836c7a9490f94ada8891e606d8e).
 
-## TODO: Steps to reproduce
+## Steps to reproduce
 
 **Note:** If this doesn't work, please [leave an issue](https://github.com/mrdbourke/food-not-food/issues).
 
