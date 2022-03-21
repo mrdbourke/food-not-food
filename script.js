@@ -65,7 +65,7 @@ function classifyImage(model, image) {
 
   // Update HTML
   predicted_class.textContent = classes[output_values.argMax().arraySync()];
-  predicted_prob.textContent = ((1 / 256) * output_max.arraySync()) * 100 + "%";
+  predicted_prob.textContent = (((1 / 256) * output_max.arraySync()) * 100).toFixed(2) + "%";
 }
 
 // Image uploading
