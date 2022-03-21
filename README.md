@@ -60,7 +60,7 @@ I use Conda for my environments. You could do similar with [`venv`](https://docs
 This code works with Python 3.8.
 
 ```
-conda create --prefix ./env python=3.8
+conda create --prefix ./env python=3.8 -y
 conda activate ./env
 conda install pip
 ``` 
