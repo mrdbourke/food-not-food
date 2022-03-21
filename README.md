@@ -69,55 +69,118 @@ conda install pip
 
 **Getting TensorFlow + GPU to work**
 
-I've found it easiest to use Conda to [install `cudatoolkit` (CUDA) + `cudnn` according to the versions required](https://www.tensorflow.org/install/source#gpu) for running [TensorFlow on the GPU](https://www.tensorflow.org/install/gpu).
+Follow the install instructions for running [TensorFlow on the GPU](https://www.tensorflow.org/install/gpu).
+
+This will be required for `model_building/train_model.py`.
 
 **Note:** Another option here to skip the installation of TensorFlow is to use your global installation of TensorFlow and just install the `requirements.txt` file below.
 
-```
-pip install -U tensorflow
-conda install -c anaconda cudatoolkit=11.2 cudnn=8.1  # the important part - versions must match, see here: https://www.tensorflow.org/install/source#gpu 
-```
-
 **Other requirements**
 
-1. If you're using your global installation of TensorFlow, you might be able to just run `pip install requirements.txt` in your environment.
-2. If you're using the TensorFlow environment you just created and installed, you should still be able to run `pip install requirements.txt`.
+If you're using your global installation of TensorFlow, you might be able to just run `pip install requirements.txt` in your environment.
+
+Or if you're running in another dedicated environment, you should also be able to just run `pip install -r requirements.txt`.
 
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
-### TODO: Getting the data
+### Getting the data
 
-### TODO: Processing the data
+1. Download Food101 data (101,000 images of food).
 
-### TODO: Modeling the data
+```
+python data_download/download_food101.py
+```
 
+2. Download a subset of Open Images data. Use the `-n` flag to indicate how many images from each set (train/valid/test) to randomly download.
 
-Once TensorFlow is installed (the behemoth), 
+For example, running `python data_download/download_open_images.py -n=100` downloads 100 images from the training, validation and test sets of Open Images (300 images in total).
 
-2. Install `requirements.txt`
+The downloading for Open Images data is powered by [FiftyOne](https://voxel51.com/docs/fiftyone/).
 
-3. Download data -> "data_download" (warning this takes ~10Gb of download/storage, this can be removed after model training)
-4. Process data -> "data_processing"
-5. Train model -> "model_building"
-6. Model eval -> "model_eval" (test images in "test_food_not_food_images")
-7. Web app version (see index.html, script.js, styles.css)
+```
+python data_download/download_open_images.py -n=100
+```
 
+### Processing the data
 
-## TODO: What data is used?
+1. Extract the Food101 data into a "`food`" directory, use the `-n` flag to set how many images of food to extract, for example `-n=10000` extracts 10,000 random food images from Food101.
 
-Want to build a dataset of 10,000~ food and 10,000~ not food images (these numbers can go up if needed).
+```
+python data_processing/extract_food101.py -n=10000
+```
 
-* Food images = Food101
-* Not images = Open Images (random subset + filtering for not food images)
+2. Extract the Open Images images into `open_images_extracted` directory. 
 
-**Food-5k (2500 images of food and 2500 images of not food)**
-* Downloaded data from Food not food on Kaggle (food images are prefixed with `1` e.g. `1_340.jpg` and not food images are prefixed with `0`) - https://www.kaggle.com/binhminhs10/food5k 
-* Extract files from food5k into `food_images` and `not_food_images` using `extract_food_5k.py` (note: this disregards the original train/eval/test splits of food5k)
+The `data_processing/extract_open_images.py` script uses the Open Images labels plus a list of foods and not foods (see `data/food_list.txt` and `data/non_food_list.txt`) to separate the downloaded Open Images.
 
-**Open Images**
-* Installed FiftyOne to download images from Open Images - `pip install fiftyone`
-* Following this guide to download a random subset of images - https://voxel51.com/docs/fiftyone/tutorials/open_images.html
-* Downloaded ~100 sample images from Open Images using `download_open_images.py` using `seed=42`
-* **Next:** Figure out how to sort through Open Images data and then create a dataset of random images from Open Images into `not_food_images`
+This is necessary because some of the images from Open Images contain foods (we don't want these in our `not_food` class).
+
+```
+python data_processing/extract_open_images.py
+```
+
+3. Move the extracted images into "`food`" and "`not_food`" directories.
+
+This is necessary because our model training file will be searching for class names by the title of our directories (`food` and `not_food`).
+
+```
+python data_processing/move_images.py 
+```
+
+4. Split the data into training and test sets.
+
+This creates a training and test split of `food` and `not_food` images.
+
+This is so we can verify the performance of our model before deploying it.
+
+It'll create the structure:
+
+```
+train/
+    food/
+        image1.jpeg
+        image2.jpeg
+        ...
+    not_food/
+        image100.jpeg
+        image101.jpeg
+        ...
+test/
+    food/
+        image201.jpeg
+        image202.jpeg
+        ...
+    not_food/
+        image301.jpeg
+        image302.jpeg
+        ...
+```
+
+To do this, run:
+
+```
+python data_processing/data_splitting.py
+```
+
+### Modeling the data
+
+**Note:** This will require a working install of TensorFlow.
+
+Running the model training file will produce a TensorFlow Lite model (this is small enough to be deployed in a browser) saved to the `models` directory.
+
+The script will look for the `train` and `test` directories and will create training and testing datasets on each respectively.
+
+It'll print out the progress at each epoch and then evaluate and save the model.
+
+```
+python model_building/train_model.py
+```
+
+## What data is used?
+
+The current deployed model uses about 40,000 images of food and 25,000 images of not food.
+
+* Food images come from the [Food101 dataset](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/).
+* Not food and *some* food images come from [Open Images](https://storage.googleapis.com/openimages/web/index.html).
