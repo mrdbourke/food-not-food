@@ -1,4 +1,8 @@
 """
+DEPRECATED - DO NOT USE
+
+NOTE: This script was for Food5k but the dataset is poor and contains too many images of people.
+
 Extracts images from Food-5k into "food" and "not_food" categories,
 training, evaluation and test sets are ignored.
 

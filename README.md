@@ -67,8 +67,34 @@ conda install pip
 
 ### Installing requirements
 
+**Getting TensorFlow + GPU to work**
+
+I've found it easiest to use Conda to [install `cudatoolkit` (CUDA) + `cudnn` according to the versions required](https://www.tensorflow.org/install/source#gpu) for running [TensorFlow on the GPU](https://www.tensorflow.org/install/gpu).
+
+**Note:** Another option here to skip the installation of TensorFlow is to use your global installation of TensorFlow and just install the `requirements.txt` file below.
+
+```
+pip install -U tensorflow
+conda install -c anaconda cudatoolkit=11.2 cudnn=8.1  # the important part - versions must match, see here: https://www.tensorflow.org/install/source#gpu 
+```
+
+**Other requirements**
+
+1. If you're using your global installation of TensorFlow, you might be able to just run `pip install requirements.txt` in your environment.
+2. If you're using the TensorFlow environment you just created and installed, you should still be able to run `pip install requirements.txt`.
+
+```
+pip install requirements.txt
+```
+
+### TODO: Getting the data
+
+### TODO: Processing the data
+
+### TODO: Modeling the data
 
 
+Once TensorFlow is installed (the behemoth), 
 
 2. Install `requirements.txt`
 
@@ -79,7 +105,7 @@ conda install pip
 7. Web app version (see index.html, script.js, styles.css)
 
 
-## TODO: Dataset(s)
+## TODO: What data is used?
 
 Want to build a dataset of 10,000~ food and 10,000~ not food images (these numbers can go up if needed).
 
